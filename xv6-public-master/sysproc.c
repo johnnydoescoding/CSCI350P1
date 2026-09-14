@@ -89,3 +89,36 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+int 
+sys_trace(void)
+{
+  int enabled; 
+  struct proc* p;
+
+  if(argint(0, &enabled) < 0){
+    return -1; 
+  }
+  p = myproc(); 
+  if(enabled == 0){
+    //turn tracing off
+    p->tracing=0; 
+  } else { 
+    //turn tracing on 
+    p->tracing=1;
+  }
+  return p->tracing_cnt;
+
+
+}
+
+int
+sys_date(void)
+{
+  struct rtcdate* r; 
+  if(argptr(0,(char**)&r,sizeof(struct rtcdate)) < 0){
+    return -1; 
+  }
+  cmostime(r);
+  return 0; 
+}

@@ -88,6 +88,9 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  //Initialize tracing 
+  p->tracing = 0;
+  p->tracing_cnt = 0; 
 
   release(&ptable.lock);
 
@@ -111,6 +114,7 @@ found:
   p->context = (struct context*)sp;
   memset(p->context, 0, sizeof *p->context);
   p->context->eip = (uint)forkret;
+
 
   return p;
 }
